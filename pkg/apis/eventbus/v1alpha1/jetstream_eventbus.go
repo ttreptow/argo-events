@@ -102,4 +102,12 @@ type JetStreamConfig struct {
 	AccessSecret *corev1.SecretKeySelector `json:"accessSecret,omitempty" protobuf:"bytes,2,opt,name=accessSecret"`
 	// +optional
 	StreamConfig string `json:"streamConfig,omitempty" protobuf:"bytes,3,opt,name=streamConfig"`
+	// +optional
+	TLS JetStreamTLSConfig `json:"tls,omitempty" protobuf:"bytes,4,opt,name=tls"`
+}
+
+type JetStreamTLSConfig struct {
+	// Disable TLS for JetStream client connections
+	// +optional
+	Disable bool `json:"disable,omitempty" protobuf:"varint,1,opt,name=disable"`
 }

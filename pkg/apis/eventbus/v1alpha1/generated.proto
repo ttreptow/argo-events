@@ -210,6 +210,15 @@ message JetStreamConfig {
 
   // +optional
   optional string streamConfig = 3;
+
+  // +optional
+  optional JetStreamTLSConfig tls = 4;
+}
+
+message JetStreamTLSConfig {
+  // Disable TLS for JetStream client connections
+  // +optional
+  optional bool disable = 1;
 }
 
 // KafkaBus holds the KafkaBus EventBus information

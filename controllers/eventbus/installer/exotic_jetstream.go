@@ -25,14 +25,14 @@ func NewExoticJetStreamInstaller(eventBus *v1alpha1.EventBus, logger *zap.Sugare
 }
 
 func (i *exoticJetStreamInstaller) Install(ctx context.Context) (*v1alpha1.BusConfig, error) {
-	JetStreamObj := i.eventBus.Spec.JetStreamExotic
-	if JetStreamObj == nil {
+	jetStreamObj := i.eventBus.Spec.JetStreamExotic
+	if jetStreamObj == nil {
 		return nil, fmt.Errorf("invalid request")
 	}
 	i.eventBus.Status.MarkDeployed("Skipped", "Skip deployment because of using exotic config.")
-	i.logger.Info("use exotic config")
+	i.logger.Info("use exotic config: %+v", jetStreamObj)
 	busConfig := &v1alpha1.BusConfig{
-		JetStream: JetStreamObj,
+		JetStream: jetStreamObj.DeepCopy(),
 	}
 	return busConfig, nil
 }

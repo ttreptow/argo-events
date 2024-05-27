@@ -21,15 +21,18 @@ type Jetstream struct {
 
 	streamSettings string
 
+	tlsConfig eventbusv1alpha1.JetStreamTLSConfig
+
 	Logger *zap.SugaredLogger
 }
 
-func NewJetstream(url string, streamSettings string, auth *eventbuscommon.Auth, logger *zap.SugaredLogger) (*Jetstream, error) {
+func NewJetstream(config *eventbusv1alpha1.JetStreamConfig, auth *eventbuscommon.Auth, logger *zap.SugaredLogger) (*Jetstream, error) {
 	js := &Jetstream{
-		url:            url,
+		url:            config.URL,
 		auth:           auth,
 		Logger:         logger,
-		streamSettings: streamSettings,
+		streamSettings: config.StreamConfig,
+		tlsConfig:      config.TLS,
 	}
 
 	return js, nil
@@ -67,9 +70,11 @@ func (stream *Jetstream) MakeConnection() (*JetstreamConnection, error) {
 			conn.NATSConnected = true
 			log.Info("Reconnected to NATS server")
 		}),
-		nats.Secure(&tls.Config{
+	}
+	if !stream.tlsConfig.Disable {
+		opts = append(opts, nats.Secure(&tls.Config{
 			InsecureSkipVerify: true,
-		}),
+		}))
 	}
 
 	switch stream.auth.Strategy {

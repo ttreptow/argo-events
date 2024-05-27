@@ -54,7 +54,7 @@ func GetEventSourceDriver(ctx context.Context, eventBusConfig eventbusv1alpha1.B
 		}
 		dvr = stansource.NewSourceSTAN(eventBusConfig.NATS.URL, *eventBusConfig.NATS.ClusterID, eventSourceName, defaultSubject, auth, logger)
 	case apicommon.EventBusJetStream:
-		dvr, err = jetstreamsource.NewSourceJetstream(eventBusConfig.JetStream.URL, eventSourceName, eventBusConfig.JetStream.StreamConfig, auth, logger) // don't need to pass in subject because subjects will be derived from dependencies
+		dvr, err = jetstreamsource.NewSourceJetstream(eventBusConfig.JetStream, eventSourceName, auth, logger) // don't need to pass in subject because subjects will be derived from dependencies
 		if err != nil {
 			return nil, err
 		}
@@ -98,7 +98,7 @@ func GetSensorDriver(ctx context.Context, eventBusConfig eventbusv1alpha1.BusCon
 		dvr = stansensor.NewSensorSTAN(eventBusConfig.NATS.URL, *eventBusConfig.NATS.ClusterID, sensorSpec.Name, auth, logger)
 		return dvr, nil
 	case apicommon.EventBusJetStream:
-		dvr, err = jetstreamsensor.NewSensorJetstream(eventBusConfig.JetStream.URL, sensorSpec, eventBusConfig.JetStream.StreamConfig, auth, logger) // don't need to pass in subject because subjects will be derived from dependencies
+		dvr, err = jetstreamsensor.NewSensorJetstream(eventBusConfig.JetStream, sensorSpec, auth, logger) // don't need to pass in subject because subjects will be derived from dependencies
 		return dvr, err
 	case apicommon.EventBusKafka:
 		dvr = kafkasensor.NewKafkaSensor(eventBusConfig.Kafka, sensorSpec, hostname, logger)

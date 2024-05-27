@@ -516,9 +516,21 @@
         "streamConfig": {
           "type": "string"
         },
+        "tls": {
+          "$ref": "#/definitions/io.argoproj.eventbus.v1alpha1.JetStreamTLSConfig"
+        },
         "url": {
           "description": "JetStream (Nats) URL",
           "type": "string"
+        }
+      }
+    },
+    "io.argoproj.eventbus.v1alpha1.JetStreamTLSConfig": {
+      "type": "object",
+      "properties": {
+        "disable": {
+          "description": "Disable TLS for JetStream client connections",
+          "type": "boolean"
         }
       }
     },

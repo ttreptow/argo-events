@@ -118,9 +118,9 @@ crds:
 
 .PHONY: manifests
 manifests: crds
-	kubectl kustomize manifests/cluster-install > manifests/install.yaml
-	kubectl kustomize manifests/namespace-install > manifests/namespace-install.yaml
-	kubectl kustomize manifests/extensions/validating-webhook > manifests/install-validating-webhook.yaml
+	kubectl kustomize manifests/cluster-install | tee manifests/install.yaml
+	kubectl kustomize manifests/namespace-install | tee manifests/namespace-install.yaml
+	kubectl kustomize manifests/extensions/validating-webhook | tee manifests/install-validating-webhook.yaml
 
 .PHONY: swagger
 swagger:

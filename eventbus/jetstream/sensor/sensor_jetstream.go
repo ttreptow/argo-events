@@ -3,6 +3,7 @@ package sensor
 import (
 	"context"
 	"fmt"
+	eventbusv1alpha1 "github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1"
 	"strings"
 	"time"
 
@@ -31,14 +32,14 @@ type SensorJetstream struct {
 	keyValueStore nats.KeyValue
 }
 
-func NewSensorJetstream(url string, sensorSpec *v1alpha1.Sensor, streamConfig string, auth *eventbuscommon.Auth, logger *zap.SugaredLogger) (*SensorJetstream, error) {
+func NewSensorJetstream(config *eventbusv1alpha1.JetStreamConfig, sensorSpec *v1alpha1.Sensor, auth *eventbuscommon.Auth, logger *zap.SugaredLogger) (*SensorJetstream, error) {
 	if sensorSpec == nil {
 		errStr := SensorNilError
 		logger.Errorf(errStr)
 		return nil, fmt.Errorf(errStr)
 	}
 
-	baseJetstream, err := eventbusjetstreambase.NewJetstream(url, streamConfig, auth, logger)
+	baseJetstream, err := eventbusjetstreambase.NewJetstream(config, auth, logger)
 	if err != nil {
 		return nil, err
 	}

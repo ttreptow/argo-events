@@ -38,6 +38,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.EventBusStatus":      schema_pkg_apis_eventbus_v1alpha1_EventBusStatus(ref),
 		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.JetStreamBus":        schema_pkg_apis_eventbus_v1alpha1_JetStreamBus(ref),
 		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.JetStreamConfig":     schema_pkg_apis_eventbus_v1alpha1_JetStreamConfig(ref),
+		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.JetStreamTLSConfig":  schema_pkg_apis_eventbus_v1alpha1_JetStreamTLSConfig(ref),
 		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.KafkaBus":            schema_pkg_apis_eventbus_v1alpha1_KafkaBus(ref),
 		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.KafkaConsumerGroup":  schema_pkg_apis_eventbus_v1alpha1_KafkaConsumerGroup(ref),
 		"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.NATSBus":             schema_pkg_apis_eventbus_v1alpha1_NATSBus(ref),
@@ -488,11 +489,36 @@ func schema_pkg_apis_eventbus_v1alpha1_JetStreamConfig(ref common.ReferenceCallb
 							Format: "",
 						},
 					},
+					"tls": {
+						SchemaProps: spec.SchemaProps{
+							Default: map[string]interface{}{},
+							Ref:     ref("github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.JetStreamTLSConfig"),
+						},
+					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/api/core/v1.SecretKeySelector"},
+			"github.com/argoproj/argo-events/pkg/apis/eventbus/v1alpha1.JetStreamTLSConfig", "k8s.io/api/core/v1.SecretKeySelector"},
+	}
+}
+
+func schema_pkg_apis_eventbus_v1alpha1_JetStreamTLSConfig(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"disable": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Disable TLS for JetStream client connections",
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
 	}
 }
 
